@@ -4,10 +4,12 @@ var keys = require("./keys.js");
 var axios = require("axios");
 var spotify = new Spotify(keys.spotify);
 var moment = require('moment');
-
+var fs = require('fs');
 var inputString = process.argv;
 var search = inputString[2];
 var object=inputString[3];
+var joined = [];
+
 
 if (search==="spotify-this-song"){
   if(object === undefined){
@@ -50,8 +52,15 @@ else if (search==="movie-this"){
       console.log("The movie's language is: " + response.data.Language); 
       console.log("The movie's country where produced is: " + response.data.Country);
       console.log("The movie's actors are: " + response.data.Actors);
-      console.log("The movie's metascore is: " + response.data.Metascore);
-      console.log("The movie's rotten tomato score is: " + response.data.tomatoMeter);
+      console.log("The movie's rotten tomato score is: " + response.data.Ratings[1].Value);
     }
   );
 }
+fs.appendFile("log.txt", search + " " + joined.join(' ') +
+"\n",
+function (err) {
+
+    if (err) {
+        return console.log("error")
+    }
+  })
