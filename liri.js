@@ -66,8 +66,30 @@ else if(search==="do-what-it-says"){
 
   
     var dataArr = data.split(",");
-    
-   if (dataArr[0]==="spotify-this-song");
+   if (dataArr[0]==="movie-this"){
+     
+      axios.get("http://www.omdbapi.com/?t="+dataArr[1]+"&y=&plot=short&apikey=trilogy").then(
+        function(response) {
+        console.log("The movie's title is: " + response.data.Title);
+        console.log("This movie came out in: " + response.data.Year);
+          console.log("The movie's plot is: " + response.data.Plot);
+          console.log("The movie's language is: " + response.data.Language); 
+          console.log("The movie's country where produced is: " + response.data.Country);
+          console.log("The movie's actors are: " + response.data.Actors);
+          console.log("The movie's rotten tomato score is: " + response.data.Ratings[1].Value);
+        }
+      );
+    }
+     if (dataArr[0]==="concert-this"){
+ 
+      axios.get("https://rest.bandsintown.com/artists/" + dataArr[1] + "/events?app_id=codingbootcamp").then(
+    function(response){
+      console.log("Venue Name: "+response.data[0].venue.name);
+      console.log("Venue Location: "+response.data[0].venue.city + ", " + response.data[0].venue.country);
+      console.log("Concert Date: " + moment(response.data[0].datetime, 'YYYY-MM-DDTHH:mm:ss').format('MM/DD/YYYY, h:mm A'));
+    });
+  }
+   if (dataArr[0]==="spotify-this-song")
      spotify.search({ type: 'track', query: dataArr[1] }, function(err, data) {
     if (err) {
       return console.log('Error occurred: ' + err);
@@ -82,6 +104,7 @@ else if(search==="do-what-it-says"){
   
     }
   });
+  
     })
 }
 fs.appendFile("log.txt", search + " " + joined.join(' ') +
