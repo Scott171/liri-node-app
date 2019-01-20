@@ -22,7 +22,7 @@ if (search==="spotify-this-song"){
     
     var song = data.tracks.items[0];
     for(i=0; i<song.artists.length; i++){
-  console.log("Artists Name: "+song.artists[i].name); 
+  console.log("Artist Name: "+song.artists[i].name); 
   console.log("Song Name: "+song.name);
   console.log("Album Name: "+song.album.name);
   console.log("Song Preview: "+song.preview_url);
@@ -55,6 +55,34 @@ else if (search==="movie-this"){
       console.log("The movie's rotten tomato score is: " + response.data.Ratings[1].Value);
     }
   );
+}
+else if(search==="do-what-it-says"){
+
+  fs.readFile('random.txt', "utf8", function(error, data){
+
+    if (error) {
+        return logIt(error);
+      }
+
+  
+    var dataArr = data.split(",");
+    
+   if (dataArr[0]==="spotify-this-song");
+     spotify.search({ type: 'track', query: dataArr[1] }, function(err, data) {
+    if (err) {
+      return console.log('Error occurred: ' + err);
+    }
+    
+    var song = data.tracks.items[0];
+    for(i=0; i<song.artists.length; i++){
+  console.log("Artist Name: "+song.artists[i].name); 
+  console.log("Song Name: "+song.name);
+  console.log("Album Name: "+song.album.name);
+  console.log("Song Preview: "+song.preview_url);
+  
+    }
+  });
+    })
 }
 fs.appendFile("log.txt", search + " " + joined.join(' ') +
 "\n",
